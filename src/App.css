@@ -1,0 +1,27 @@
+.wrapper {
+  display: grid;
+
+  grid-template-areas:
+  'p c'
+  'с c';
+
+  grid-template-rows: 60px 10fr;
+    grid-template-columns: 2frs 10frs;
+      grid-gap: 10px
+  
+}
+
+.picture {
+  grid-area: p;
+  background-color: plum;
+}
+.picture img {
+width: 100px;
+}
+
+
+.content {
+  grid-area: c;
+  background-color: paleturquoise;
+
+}
