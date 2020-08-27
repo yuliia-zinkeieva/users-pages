@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import { Link} from "react-router-dom";
-import axios from 'axios'
-import ReactPaginate from 'react-paginate';
-import { Container, Row, Col } from 'react-grid-system';
+import axios from "axios"
+import ReactPaginate from "react-paginate";
+import { Container, Row, Col } from "react-grid-system";
 import "./styles.css";
 
 export default class Home extends Component {
@@ -16,13 +16,9 @@ export default class Home extends Component {
         }
     }
 
-    // handleOnClick = () => {
-    //
-    //     this.setState({redirect: true});
-    // }
     receivedData() {
         axios
-            .get(`https://randomuser.me/api/?page=3&results=50&seed=abc`)
+            .get("https://randomuser.me/api/?page=3&results=50&seed=abc")
             .then(res => {
                 const data = res.data.results;
                 const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)

@@ -1,26 +1,47 @@
 import React from "react";
-import axios from 'axios';
+import axios from "axios";
 import {Col, Container, Row} from "react-grid-system";
 import {Link} from "react-router-dom";
 
-let data;
-axios
-    .get(`https://randomuser.me/api/?page=3&results=50&seed=abc`)
-    .then(res => {
-        data = res.data.results;
-    });
+function receiveData(theProps){
+    axios
+        .get("https://randomuser.me/api/?page=3&results=50&seed=abc")
+        .then(res => {
+            //theProps.match.params.data = res.data.results;
+            return res.data.results;
+            //console.log(theProps.match.params.data);
+        })
+        .then(data => {
+            console.log(data.find(user => user.id.value === theProps.match.params.id));
+
+        });
+}
+
+function findUser(theProps){
+    console.log('find', theProps.match.params.data);
+    return theProps.match.params.data.find(user => user.id.value === theProps.match.params.id);
+}
+
 
 const PersonalPage = (props) => {
-    const personalId = props.match.params.id;  //only id.value; can't find diff prsns
-    console.log(data);
-    let user;
+    // const personalId = props.match.params.id;  //only id.value; can't find diff prsns
+    // console.log(data);
+    // let user;
+    //
+    // for (let i = 0; i < data.length; i++) {
+    //     if (String(data[i].id.value) === String(personalId)) {
+    //         user = data[i];
+    //         break;
+    //     }
+    // }
+    //
+   // props.match.params.useful = [1,2,3,4];
 
-    for (let i = 0; i < data.length; i++) {
-        if (String(data[i].id.value) === String(personalId)) {
-            user = data[i];
-            break;
-        }
-    }
+
+    receiveData(props);
+    console.log('a', props.match.params);
+
+    let user = findUser(props);
 
     return (
         <div>
