@@ -1,92 +1,95 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
-import axios from "axios"
-import ReactPaginate from "react-paginate";
-import {Container, Row, Col} from "react-grid-system";
-import "./styles.css";
+import {Col, Container} from "react-grid-system";
+import LogOut from "./LogOut";
 
-export default class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            offset: 0,
-            data: [],
-            perPage: 7,
-            currentPage: 0
-        }
-    }
 
-    receivedData() {
-        axios
-            .get("https://randomuser.me/api/?page=3&results=50&seed=abc")
-            .then(res => {
-                const data = res.data.results;
-                const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
-                const postData = slice.map(pd =>
-                    <div>
-                        <Container fluid>
-                            <Row>
-                                <Col md={1}>
-                                    <img alt={pd.name.first} src={pd.picture.medium}/>
-                                </Col>
-                                <Col md={5}>
-                                    <Row>
-                                        <Link to={"/" + pd.id.value}>
-                                            <button variant="outlined">
-                                                {pd.name.title} {pd.name.first} {pd.name.last}
-                                            </button>
-                                        </Link>
-                                    </Row>
-                                    <Row>
-                                        Email: {pd.email}
-                                    </Row>
-                                </Col>
-                            </Row>
-                        </Container></div>)
+function ToLogin() {
+    window.location.href = 'http://localhost:3000/login';
+}
 
-                this.setState({
-                    pageCount: Math.ceil(data.length / this.state.perPage),
-                    postData
-                })
-            });
-    }
 
-    handlePageClick = (e) => {
-        const selectedPage = e.selected;
-        const offset = selectedPage * this.state.perPage;
+function CheckStatus() { //todo:check authorization
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const status = urlParams.get('status')
+    return status;
+}
 
-        this.setState({
-            currentPage: selectedPage,
-            offset: offset
-        }, () => {
-            this.receivedData()
-        });
-    }
 
-    componentDidMount() {
-        this.receivedData()
-    }
-
-    render() {
+function Status(status) {
+    if (status.status === 'true') {
+        window.alert('You have been logged in')
         return (
             <div>
-                <Link to="/POST">
-                    <button variant="outlined">Create a user</button>
-                </Link>
-                {this.state.postData}
-                <ReactPaginate
-                    previousLabel={"prev"}
-                    nextLabel={"next"}
-                    breakLabel={"..."}
-                    breakClassName={"break-me"}
-                    pageCount={this.state.pageCount}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={this.handlePageClick}
-                    containerClassName={"pagination"}
-                    subContainerClassName={"pages pagination"}
-                    activeClassName={"active"}/>
+            <Link to="/create">
+                        <button variant="outlined" >
+                            Create a customer
+                        </button>
+                    </Link>
+            <button onClick={LogOut}>
+                Logout
+            </button>
             </div>
+        );
+    } else if (status.status == null) {
+        return (
+            <Container fluid>
+                <Col>
+                    <Link to="/registration">
+                        <button variant="outlined">
+                            Sign Up
+                        </button>
+                    </Link>
+                </Col>
+                <Col>
+            <button onClick={ToLogin}>
+                LogIN
+            </button>
+                    </Col>
+            </Container>
+        );
+    } else {
+        window.alert('You have been logged OUT')
+        return (
+            <Container fluid>
+                <Col>
+                    <Link to="/registration">
+                        <button variant="outlined">
+                            Sign Up
+                        </button>
+                    </Link>
+                </Col>
+                <Col>
+            <button onClick={ToLogin}>
+                LogIN
+            </button>
+                    </Col>
+            </Container>
         );
     }
 }
+
+
+const Home = () => {
+    const st = CheckStatus();
+    return (
+        <div>
+            <Container fluid>
+                <h1>Home page </h1>
+                <Col>
+                    <Link to="/customers">
+                        <button variant="outlined">
+                            List of customers
+                        </button>
+                    </Link>
+                </Col>
+
+                    <Status status={st}/>
+
+            </Container>
+        </div>
+    );
+}
+
+export default Home;
