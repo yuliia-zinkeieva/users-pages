@@ -3,19 +3,16 @@ import React from "react";
 
 const handleRedirect = (res) => {
     if (res.status === 200) {
-        const status = 'true';
-
-        window.location.href = 'http://localhost:3000?status=' + status;
+        window.location.href = 'http://localhost:3000';
     } else {
-        const status = 'false';
-        window.location.href = 'http://localhost:3000?status=' + status;
+        window.location.href = 'http://localhost:3000/login';
     }
 
 }
 
 
 function loginSubmit(values) {
-    fetch('http://localhost:4000/signin', {
+    fetch('/auth/sign-in', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(values)

@@ -6,22 +6,21 @@ const handleRedirect = (res) => {
         console.log('heeeere')
         const status = false;
 
-        window.location.href = 'http://localhost:3000?status=' + status;
+        window.location.href = 'http://localhost:3000';
     } else {
         window.alert('errors occurred')
     }
 
 }
 
-
+//todo: refresh page
 const LogOut = () => {
-    fetch('http://localhost:4000/logout', {
+    fetch('/auth/sign-out', {
         method: 'get',
         headers: {'Content-Type': 'application/json'},
-        //body: JSON.stringify(values)
     })
         .then(response => {
-            handleRedirect(response);
+            // handleRedirect();
             //return response.json();
         })
         .catch(e => console.log(e))

@@ -5,6 +5,7 @@ import CreateCustomer from './CreateCustomer';
 import CreateUser from './CreateUser';
 import CustomersList from './CustomersList';
 import LogIn from "./LogIn";
+import DeleteCustomer from "./DeleteCustomer";
 
 const Main = () => {
     return (
@@ -14,6 +15,7 @@ const Main = () => {
             <Route path='/customers' component={CustomersList}/>
             <Route path='/login' component={LogIn}/>
             <Route exact path='/create' component={CreateCustomer}/>
+            <Route exact path='/delete' component={DeleteCustomer}/>
         </Switch>
     );
 }

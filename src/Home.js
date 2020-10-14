@@ -2,24 +2,15 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import {Col, Container} from "react-grid-system";
 import LogOut from "./LogOut";
+import CheckAuthorization from "./CheckAuthorization";
 
 
 function ToLogin() {
     window.location.href = 'http://localhost:3000/login';
 }
 
-
-function CheckStatus() { //todo:check authorization
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const status = urlParams.get('status')
-    return status;
-}
-
-
-function Status(status) {
-    if (status.status === 'true') {
-        window.alert('You have been logged in')
+function Status({status}) {
+    if (status) {
         return (
             <div>
             <Link to="/create">
@@ -27,30 +18,17 @@ function Status(status) {
                             Create a customer
                         </button>
                     </Link>
+                <Link to="/delete">
+                        <button variant="outlined" >
+                            Delete a customer
+                        </button>
+                    </Link>
             <button onClick={LogOut}>
                 Logout
             </button>
             </div>
         );
-    } else if (status.status == null) {
-        return (
-            <Container fluid>
-                <Col>
-                    <Link to="/registration">
-                        <button variant="outlined">
-                            Sign Up
-                        </button>
-                    </Link>
-                </Col>
-                <Col>
-            <button onClick={ToLogin}>
-                LogIN
-            </button>
-                    </Col>
-            </Container>
-        );
     } else {
-        window.alert('You have been logged OUT')
         return (
             <Container fluid>
                 <Col>
@@ -72,7 +50,11 @@ function Status(status) {
 
 
 const Home = () => {
-    const st = CheckStatus();
+    const [isAuthorized, setIsAuthorized] = React.useState(false);
+    React.useEffect(()=>{
+         CheckAuthorization().then((authorized) => setIsAuthorized(authorized))
+    },[])
+
     return (
         <div>
             <Container fluid>
@@ -85,7 +67,7 @@ const Home = () => {
                     </Link>
                 </Col>
 
-                    <Status status={st}/>
+                    <Status status={isAuthorized}/>
 
             </Container>
         </div>
