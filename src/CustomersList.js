@@ -25,6 +25,7 @@ export default class CustomersList extends Component {
         super(props);
         this.state = {
             data: [],
+            classes: null
         }
     }
 

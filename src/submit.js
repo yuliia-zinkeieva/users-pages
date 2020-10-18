@@ -6,8 +6,8 @@ const handleRedirect = (res) => {
         window.location.href = 'http://localhost:3000';
     } else {
         window.location.href = 'http://localhost:3000/registration';
+        window.alert('incorrect data');
     }
-
 }
 
 
