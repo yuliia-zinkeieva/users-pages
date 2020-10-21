@@ -1,10 +1,9 @@
 import React from 'react'
 import {Field, reduxForm} from 'redux-form'
-import loginSubmit from './loginSubmit'
+import loginSubmit from '../submits/loginSubmit'
 
 const validate = values => {
     const errors = {}
-
     if (!values.email) {
         errors.email = 'Required'
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
@@ -21,7 +20,7 @@ const renderField = ({input, label, type, meta: {touched, error}}) => (
     <div>
         <input {...input} placeholder={label} type={type}/>
         {touched && (error && <span>{error}</span>)}
-        <h1></h1>
+        <h1> </h1>
     </div>
 )
 
@@ -31,9 +30,8 @@ const LoginForm = (props) => {
         <form onSubmit={handleSubmit(loginSubmit)}>
             <Field name="email" type="email" component={renderField} label="Email"/>
             <Field name="password" type="password" component={renderField} label="Password"/>
-
             <div>
-                <h1></h1>
+                <h1> </h1>
                 <button type="submit" disabled={submitting}>Submit</button>
                 <button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</button>
             </div>
@@ -46,3 +44,9 @@ export default reduxForm({
     validate,                // <--- validation function given to redux-form
     //warn                     // <--- warning function given to redux-form
 })(LoginForm)
+
+//todo:redux - authorized?
+//todo:auth reducer + action authorize (1,0) +
+//fetch + authorize (1) + authorized=true,
+//from login form auto redirect to list customers
+//if not authorized to login in any case (if logout)

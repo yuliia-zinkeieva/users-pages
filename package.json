@@ -48,6 +48,10 @@
   },
   "devDependencies": {
     "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "clsx": "^1.1.1",
+    "material-table": "^1.69.1",
+    "prop-types": "^15.7.2",
     "redux-form-website-template": "^1.0.13"
   }
 }

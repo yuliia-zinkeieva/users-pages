@@ -1,11 +1,11 @@
-import React, {Component} from "react";
+import React from "react";
 import {Link} from "react-router-dom";
 import {Col, Container} from "react-grid-system";
-import LogOut from "./LogOut";
-import CheckAuthorization from "./CheckAuthorization";
-
+import LogOut from "../actions/LogOut";
+import CheckAuthorization from "../actions/CheckAuthorization";
 
 function ToLogin() {
+    //todo: redirect
     window.location.href = 'http://localhost:3000/login';
 }
 
@@ -13,19 +13,14 @@ function Status({status}) {
     if (status) {
         return (
             <div>
-            <Link to="/create">
-                        <button variant="outlined" >
-                            Create a customer
-                        </button>
-                    </Link>
-                <Link to="/delete">
-                        <button variant="outlined" >
-                            Delete a customer
-                        </button>
-                    </Link>
-            <button onClick={LogOut}>
-                Logout
-            </button>
+                <Link to="/create">
+                    <button variant="outlined">
+                        Create a customer
+                    </button>
+                </Link>
+                <button onClick={LogOut}>
+                    Logout
+                </button>
             </div>
         );
     } else {
@@ -39,10 +34,10 @@ function Status({status}) {
                     </Link>
                 </Col>
                 <Col>
-            <button onClick={ToLogin}>
-                LogIN
-            </button>
-                    </Col>
+                    <button onClick={ToLogin}>
+                        LogIN
+                    </button>
+                </Col>
             </Container>
         );
     }
@@ -51,9 +46,9 @@ function Status({status}) {
 
 const Home = () => {
     const [isAuthorized, setIsAuthorized] = React.useState(false);
-    React.useEffect(()=>{
-         CheckAuthorization().then((authorized) => setIsAuthorized(authorized))
-    },[])
+    React.useEffect(() => {
+        CheckAuthorization().then((authorized) => setIsAuthorized(authorized))
+    }, [])
 
     return (
         <div>
@@ -66,9 +61,7 @@ const Home = () => {
                         </button>
                     </Link>
                 </Col>
-
-                    <Status status={isAuthorized}/>
-
+                <Status status={isAuthorized}/>
             </Container>
         </div>
     );

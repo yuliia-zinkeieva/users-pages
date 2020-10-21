@@ -1,6 +1,6 @@
 import React from 'react'
 import {Field, reduxForm} from 'redux-form'
-import customersSubmit from './customersSubmit';
+import customersSubmit from '../submits/customersSubmit';
 
 const validate = values => {
     const errors = {}
@@ -16,7 +16,7 @@ const renderField = ({input, label, type, meta: {touched, error}}) => (
     <div>
         <input {...input} placeholder={label} type={type}/>
         {touched && (error && <span>{error}</span>)}
-        <h1></h1>
+        <h1> </h1>
     </div>
 )
 
@@ -27,7 +27,7 @@ const CustomerForm = (props) => {
             <Field name="email" type="email" component={renderField} label="Email of customer"/>
             <Field name="firstname" type="text" component={renderField} label="Firstname of customer"/>
             <div>
-                <h1></h1>
+                <h1> </h1>
                 <button type="submit" disabled={submitting}>Submit</button>
                 <button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</button>
             </div>

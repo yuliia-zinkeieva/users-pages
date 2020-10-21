@@ -1,10 +1,9 @@
 import React from "react";
 import {Provider} from "react-redux";
-import store from "./store";
-import RegistrationForm from "./RegistrationForm";
+import store from "../services/redux/store";
+import RegistrationForm from "../services/redux/forms/RegistrationForm";
 
-
-const CreateUser = () => {
+const Registration = () => {
     return (
         <Provider store={store}>
             <div style={{padding: 15}}>
@@ -15,6 +14,4 @@ const CreateUser = () => {
     );
 }
 
-export default CreateUser;
-
-//<SyncValidationForm onSubmit={showResults} />
+export default Registration;
