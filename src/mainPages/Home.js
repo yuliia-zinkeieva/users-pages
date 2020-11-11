@@ -1,15 +1,19 @@
 import React from "react";
+import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {Col, Container} from "react-grid-system";
-import LogOut from "../actions/LogOut";
-import CheckAuthorization from "../actions/CheckAuthorization";
-
-function ToLogin() {
-    //todo: redirect
-    window.location.href = 'http://localhost:3000/login';
-}
+import {useHistory} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {authenticateAction, logOutAction} from "../services/redux/actions/auth";
 
 function Status({status}) {
+    let history = useHistory();
+
+    const dispatch = useDispatch();
+    const logOutCallback = () => {
+        dispatch(logOutAction());
+    }
+
     if (status) {
         return (
             <div>
@@ -18,7 +22,7 @@ function Status({status}) {
                         Create a customer
                     </button>
                 </Link>
-                <button onClick={LogOut}>
+                <button onClick={logOutCallback}>
                     Logout
                 </button>
             </div>
@@ -34,7 +38,9 @@ function Status({status}) {
                     </Link>
                 </Col>
                 <Col>
-                    <button onClick={ToLogin}>
+                    <button onClick={() => {
+                        history.push("/login")
+                    }}>
                         LogIN
                     </button>
                 </Col>
@@ -45,10 +51,16 @@ function Status({status}) {
 
 
 const Home = () => {
-    const [isAuthorized, setIsAuthorized] = React.useState(false);
-    React.useEffect(() => {
-        CheckAuthorization().then((authorized) => setIsAuthorized(authorized))
-    }, [])
+    const dispatch = useDispatch();
+    const authenticateCallback = () => {
+        dispatch(authenticateAction());
+    }
+    authenticateCallback();
+    const isAuthorized = useSelector(({auth}) => auth.isAuthorized);
+    // React.useEffect(() => {
+    //     // todo: checkAuthorization action
+    //     CheckAuthorization()//.then((authorized) => setIsAuthorized(authorized))
+    // }, [])
 
     return (
         <div>

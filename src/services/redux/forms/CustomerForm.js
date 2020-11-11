@@ -1,6 +1,7 @@
-import React from 'react'
-import {Field, reduxForm} from 'redux-form'
-import customersSubmit from '../submits/customersSubmit';
+import React from 'react';
+import {Field, reduxForm} from 'redux-form';
+import {useDispatch} from "react-redux";
+import {createCustomerAction} from '../actions/auth';
 
 const validate = values => {
     const errors = {}
@@ -22,8 +23,12 @@ const renderField = ({input, label, type, meta: {touched, error}}) => (
 
 const CustomerForm = (props) => {
     const {handleSubmit, pristine, reset, submitting} = props
+    const dispatch = useDispatch();
+    const createCallback = ({email, firstname} = {}) => {
+        dispatch(createCustomerAction(email,firstname));
+    }
     return (
-        <form onSubmit={handleSubmit(customersSubmit)}>
+        <form onSubmit={handleSubmit(createCallback)}>
             <Field name="email" type="email" component={renderField} label="Email of customer"/>
             <Field name="firstname" type="text" component={renderField} label="Firstname of customer"/>
             <div>
