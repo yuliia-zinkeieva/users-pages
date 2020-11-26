@@ -3,6 +3,7 @@ import {Field, reduxForm} from 'redux-form'
 import {useDispatch} from "react-redux";
 import {loginAction} from "../actions/auth";
 //import loginSubmit from '../submits/loginSubmit'
+import '../../../styles/form.scss'
 
 const validate = values => {
     const errors = {}
@@ -34,7 +35,7 @@ const LoginForm = (props) => {
 
     const {handleSubmit, pristine, reset, submitting} = props
     return (
-        <form onSubmit={handleSubmit(loginCallback)}>
+        <form  onSubmit={handleSubmit(loginCallback)}>
             <Field name="email" type="email" component={renderField} label="Email"/>
             <Field name="password" type="password" component={renderField} label="Password"/>
             <div>

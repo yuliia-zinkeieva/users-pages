@@ -24,6 +24,10 @@ const renderField = ({input, label, type, meta: {touched, error}}) => (
 
 const CustomerEditForm = (props) => {
     //const customer = {email:'1@gmail.com', name:'vitya'}
+    //todo: fetch by id custom + current cust in store
+    //todo: auto fill fields
+    //todo: css styles
+    //todo: handle errors properly
     const customer = useSelector(({auth}) => auth.customer);
     //console.log(customer);
     const {handleSubmit, pristine, reset, submitting} = props
