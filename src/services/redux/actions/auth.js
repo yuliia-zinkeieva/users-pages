@@ -2,17 +2,17 @@ import {
     SUCCESSFUL_LOGIN,
     FAILED_LOGIN,
     LOGOUT,
-    //REGISTER,
     AUTHENTICATE,
     SUCCESSFUL_CREATE_CUSTOMER,
     FAILED_CREATE_CUSTOMER,
     SUCCESSFUL_DELETE_CUSTOMER,
     FAILED_DELETE_CUSTOMER,
-    SUCCESSFUL_EDIT_CUSTOMER, FAILED_EDIT_CUSTOMER, CHOOSE_CUSTOMER
+    SUCCESSFUL_EDIT_CUSTOMER, FAILED_EDIT_CUSTOMER, SUCCESSFUL_GET_CUSTOMER, FAILED_GET_CUSTOMER
 } from './actionNames'
-//import axios from 'axios';
 import {history} from '../../../utils/history';
 import handleErrorResponse from '../../../actions/handleErrorResponse';
+import { SubmissionError } from 'redux-form'
+        // 'redux-form/lib/SubmissionError'
 
 
 export const authenticateAction = () => (dispatch) => {
@@ -42,7 +42,7 @@ export const authenticateAction = () => (dispatch) => {
 
 export const loginAction = (email, password) => (dispatch) => {
     console.log(email)
-    fetch('/auth/sign-in', {
+    return fetch('/auth/sign-in', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({email, password})
@@ -59,7 +59,7 @@ export const loginAction = (email, password) => (dispatch) => {
         .then(result => {
             dispatch(loginFailedAction(result));
         })
-        .catch(e => console.log(e))
+        // .catch(e => console.log(e))
 }
 
 export const loginSuccessfulAction = (email) => (dispatch) => {
@@ -73,10 +73,14 @@ export const loginSuccessfulAction = (email) => (dispatch) => {
 }
 
 export const loginFailedAction = (errorResponse) => (dispatch) => {
-    console.log('fail action', errorResponse)
+    console.log('fail action', errorResponse.message)
     handleErrorResponse(errorResponse);
+
+    // throw new SubmissionError({ email: errorResponse.message, _error: 'Login failed!' })
+
     return dispatch({
         type: FAILED_LOGIN,
+        // message: errorResponse.message
     });
 }
 
@@ -99,14 +103,7 @@ export const registerAction = (email, password) => (dispatch) => {
             dispatch(loginFailedAction(result));
         })
         .catch(e => console.log(e))
-    // axios.post('/auth/sign-up', {
-    //     email,
-    //     password,
-    // })
-    //     .then(response => {
-    //          dispatch(logInAction()) // todo: separate loginSuccess action
-    //     })
-    //     .catch(e => console.log(e))
+
 }
 
 export const logOutAction = () => (dispatch) => {
@@ -120,16 +117,25 @@ export const logOutAction = () => (dispatch) => {
         .catch(e => console.log(e))
 }
 
-export const createCustomerAction = (email, firstname) => (dispatch) => {
+export const createCustomerAction = (email, firstname, file) => (dispatch) => {
+    console.log('data from form',file);
+    const data = new FormData();
+    // console.log('d1',data);
+    data.append('image', file);
+    data.append('info', JSON.stringify({email, firstname}));
+    console.log(data.get('info'), data.get('image'))
+
     fetch('/customer', {
         method: 'post',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, firstname})
+        // headers: {'Content-Type': 'multipart/form-data'},
+        // headers: {'Content-Type': 'application/json'},
+        body:  data,
+        //JSON.stringify({email, firstname,file})
     })
         .then(response => {
             if (response.status === 200) {
                 dispatch(createSuccessfulAction(email));
-                history.push('/customers');
+                history.push('/');
                 window.location.reload();
             } else
                 return (response.json());
@@ -164,7 +170,7 @@ export const deleteCustomerAction = (id) => (dispatch) => {
         .then(({status}) => {
             if (status === 200) {
                 dispatch(deleteSuccessfulAction(id));
-                history.push('/customers');
+                history.push('/');
                 window.location.reload();
             } else {
                 dispatch(deleteFailedAction());
@@ -184,14 +190,14 @@ export const deleteSuccessfulAction = (id) => (dispatch) => {
     });
 }
 
-export const chooseCustomerAction = (data) => (dispatch) => {
-    return dispatch({
-        type: CHOOSE_CUSTOMER,
-        data: {
-            customer: data
-        }
-    });
-}
+// export const chooseCustomerAction = (data) => (dispatch) => {
+//     return dispatch({
+//         type: CHOOSE_CUSTOMER,
+//         data: {
+//             customer: data
+//         }
+//     });
+// }
 
 export const deleteFailedAction = () => (dispatch) => {
     return dispatch({
@@ -199,16 +205,24 @@ export const deleteFailedAction = () => (dispatch) => {
     });
 }
 
-export const editCustomerAction = (id, email, firstname) => (dispatch) => {
+export const editCustomerAction = (id, email, firstname, file) => (dispatch) => {
+    console.log(file)
+    // console.log('data from form',file);
+    const data = new FormData();
+    // console.log('d1',data);
+    data.append('image', file);
+    data.append('info', JSON.stringify({email, firstname}));
+    console.log(data.get('info'), data.get('image'))
+
     fetch(`/customer/${id}`, {
         method: 'post',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, firstname})
+        // headers: {'Content-Type': 'application/json'},
+        body: data
     })
         .then(response => {
             if (response.status === 200) {
                 dispatch(editSuccessfulAction());
-                history.push('/customers');
+                history.push('/');
                 window.location.reload();
             } else
                 return (response.json());
@@ -229,6 +243,47 @@ export const editFailedAction = (errorResponse) => (dispatch) => {
     handleErrorResponse(errorResponse);
     return dispatch({
         type: FAILED_EDIT_CUSTOMER,
+    });
+}
+
+
+export const getCustomerAction = (id) => (dispatch) => {
+    fetch(`/customer/${id}`, {
+        method: 'get',
+        headers: {'Content-Type': 'application/json'},
+    })
+        .then(response => {
+            if (response.status !== 200) {
+                dispatch(getCustomerFailedAction());
+                // history.push('/errror');
+                // window.location.reload();
+            }
+            else
+                return (response.json());
+        })
+        .then(result => {
+            dispatch(getCustomerSuccessfulAction(id, result));
+
+        })
+        .catch(e => console.log(e))
+}
+
+export const getCustomerSuccessfulAction = (id,data) => (dispatch) => {
+    console.log('data server', data);
+    const receivedCustomer = data;
+    receivedCustomer.id = id;
+    return dispatch({
+        type: SUCCESSFUL_GET_CUSTOMER,
+        data: {
+            customer: receivedCustomer
+        }
+    });
+}
+
+export const getCustomerFailedAction = () => (dispatch) => {
+    // handleErrorResponse(errorResponse);
+    return dispatch({
+        type: FAILED_GET_CUSTOMER,
     });
 }
 

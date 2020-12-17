@@ -1,0 +1,31 @@
+.ReactModal_Body {
+  display: flex;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #e0e9fc;
+  height: 50vh;
+  width: 50%;
+  color: white;
+  font-family: Arial;
+  //align-self: center;
+  //justify-self: center;
+}
+
+.button {
+  margin-left: 20px !important;
+}
+
+.wrapper{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}

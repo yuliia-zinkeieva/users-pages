@@ -1,6 +1,7 @@
 const initialState = {
     isAuthorized: localStorage.getItem('isAuthorized') === 'true',
     customer: {},
+    loginError: null,
 };
 
 export default function authReducer(state = initialState, action) {
@@ -32,6 +33,7 @@ export default function authReducer(state = initialState, action) {
             return {
                 ...state,
                 isAuthorized: false,
+                // message: action.data.message
             }
 
         case 'SUCCESSFUL_CREATE_CUSTOMER':
@@ -56,10 +58,21 @@ export default function authReducer(state = initialState, action) {
                 ...state,
             }
 
-            case 'CHOOSE_CUSTOMER':
+        case 'CHOOSE_CUSTOMER':
             return {
                 ...state,
                 customer: action.data.customer,
+            }
+
+        case 'SUCCESSFUL_GET_CUSTOMER':
+            return {
+                ...state,
+                customer: action.data.customer
+            }
+
+        case 'FAILED_GET_CUSTOMER':
+            return {
+                ...state,
             }
 
         default:

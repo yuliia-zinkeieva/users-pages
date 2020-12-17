@@ -1,0 +1,46 @@
+.input_file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+//.input_file + label {
+//    font-size: 1.25em;
+//    font-weight: 700;
+//    color: white;
+//    background-color: black;
+//    display: inline-block;
+//}
+//
+//.input_file:focus + label,
+//.input_file + label:hover {
+//    background-color: red;
+//}
+
+.input_file + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+.form_button {
+	margin-top: 5px !important;
+	width: 153px;
+	height: 21px;
+	font-size: 12px !important;
+}
+
+.label {
+	margin-bottom: 10px;
+}
+
+.wrapper {
+	display: flex;
+	align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
